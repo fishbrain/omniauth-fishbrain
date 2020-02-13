@@ -6,6 +6,8 @@ require 'omniauth'
 require 'omniauth-fishbrain'
 require 'pp'
 
+
+
 # Example Sinatra+Omniauth+Fishbrain app
 class FishbrainExample < Sinatra::Application
   configure do
@@ -15,18 +17,21 @@ class FishbrainExample < Sinatra::Application
   use OmniAuth::Builder do
     provider :fishbrain,
              ENV.fetch('FISHBRAIN_CLIENT_ID'),
-             ENV.fetch('FISHBRAIN_CLIENT_SECRET')
+             ENV.fetch('FISHBRAIN_CLIENT_SECRET'),
+             client_options: {
+               site: 'https://accounts-staging.fishbrain.com'
+             }
   end
 
   get '/' do
     haml :index
   end
 
-  get '/auth/failure' do
+  get '/client/auth/failure' do
     haml :auth_failure
   end
 
-  get '/auth/:provider/callback' do
+  get '/client/auth/:provider/callback' do
     haml :callback
   end
 
