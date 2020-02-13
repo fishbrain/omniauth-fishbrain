@@ -6,8 +6,6 @@ require 'omniauth'
 require 'omniauth-fishbrain'
 require 'pp'
 
-
-
 # Example Sinatra+Omniauth+Fishbrain app
 class FishbrainExample < Sinatra::Application
   configure do
@@ -21,6 +19,9 @@ class FishbrainExample < Sinatra::Application
              client_options: {
                site: 'https://accounts-staging.fishbrain.com'
              }
+    configure do |config|
+      config.path_prefix = '/client/auth'
+    end
   end
 
   get '/' do
