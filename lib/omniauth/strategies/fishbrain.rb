@@ -1,84 +1,58 @@
 # frozen_string_literal: true
 
 require 'omniauth-oauth2'
-require 'jwt'
+require 'omniauth/fishbrain/verifies_id_token'
 
 module OmniAuth
   module Strategies
-    # OmniAuth Strategy for Fishbrain
     class Fishbrain < OmniAuth::Strategies::OAuth2
+      include OmniAuth::Fishbrain::VerifiesIdToken
+
       option :name, 'fishbrain'
-      option :client_options,
-             site: 'https://accounts.fishbrain.com',
-             authorize_url: '/oauth2/authorize',
-             token_url: '/oauth2/token',
-             auth_scheme: :basic_auth
+      option :client_options, site: 'https://accounts.fishbrain.com',
+                              authorize_url: '/oauth2/authorize',
+                              token_url: '/oauth2/token',
+                              auth_scheme: :basic_auth
       option :scope, 'email openid profile'
-      option :jwt_leeway, 60
       option :user_pool_id, 'eu-west-1_5r0WbR8OH'
       option :aws_region, 'eu-west-1'
+      option :jwt_leeway, 60
 
       uid do
-        parsed_id_token['sub'] if parsed_id_token
+        id_token['sub']
       end
 
       info do
-        if parsed_id_token
-          {
-            name: parsed_id_token['name'],
-            email: parsed_id_token['email'],
-            phone: parsed_id_token['phone_number']
-          }
-        end
+        {
+          given_name: id_token['given_name'],
+          email: id_token['email'],
+          phone: id_token['phone_number'],
+        }
       end
 
       credentials do
-        { token: access_token.token }.tap do |hash|
-          hash[:refresh_token] = access_token.refresh_token if access_token.expires? && access_token.refresh_token
-          hash[:expires_at] = access_token.expires_at if access_token.expires?
-          hash[:expires] = access_token.expires?
-          hash[:id_token] = id_token if id_token
+        hash = { token: access_token.token }
+        if access_token.expires?
+          hash[:refresh_token] = access_token.refresh_token if access_token.refresh_token
+          hash[:expires_at] = access_token.expires_at
         end
+        hash[:expires] = access_token.expires?
+        hash[:id_token] = access_token['id_token'] if access_token['id_token']
+        hash
       end
 
       extra do
-        { raw_info: parsed_id_token.reject { |key| %w[iss aud exp iat token_use nbf].include?(key) } }
+        { raw_info: id_token.reject { |key| %w[iss aud exp iat token_use].include?(key) } }
       end
 
       private
 
-      # Override this method to remove the query string from the callback_url because Cognito
-      # requires an exact match
-      def build_access_token
-        client.auth_code.get_token(
-          request.params['code'],
-          { redirect_uri: callback_url.split('?').first }.merge(token_params.to_hash(symbolize_keys: true)),
-          deep_symbolize(options.auth_token_params)
-        )
+      def callback_url
+        full_host + script_name + callback_path
       end
 
-      def id_token
-        access_token && access_token['id_token']
-      end
-
-      def parsed_id_token
-        return nil unless id_token
-
-        @parsed_id_token ||= JWT.decode(
-          id_token,
-          nil,
-          false,
-          verify_iss: options[:aws_region] && options[:user_pool_id],
-          iss: "https://cognito-idp.#{options[:aws_region]}.amazonaws.com/#{options[:user_pool_id]}",
-          verify_aud: true,
-          aud: options[:client_id],
-          verify_sub: true,
-          verify_expiration: true,
-          verify_not_before: true,
-          verify_iat: true,
-          verify_jti: false,
-          leeway: options[:jwt_leeway]
-        ).first
+      def raw_id_token
+        access_token['id_token']
       end
     end
   end
