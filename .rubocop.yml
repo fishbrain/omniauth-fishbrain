@@ -1,0 +1,24 @@
+AllCops:
+  TargetRubyVersion: 2.7
+
+Style/Documentation:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Naming/FileName:
+  Exclude:
+    - 'lib/omniauth-fishbrain.rb'
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: required
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/LineLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 12
