@@ -1,9 +1,0 @@
-!!!
-%html
-  %head
-    %title
-      Cognito auth example
-  %body
-    %h1= params[:provider]
-
-    %pre= request.env['omniauth.auth'].pretty_inspect

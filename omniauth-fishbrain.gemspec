@@ -1,25 +1,20 @@
 # frozen_string_literal: true
 
-require File.expand_path(
-  File.join('..', 'lib', 'omniauth', 'fishbrain', 'version'),
-  __FILE__
-)
+lib = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift lib unless $LOAD_PATH.include?(lib)
 
-Gem::Specification.new do |gem|
-  gem.name          = 'omniauth-fishbrain'
-  gem.version       = OmniAuth::Fishbrain::VERSION
-  gem.license       = 'MIT'
-  gem.summary       = %(A Fishbrain strategy for OmniAuth 1.x)
-  gem.description   = %(A Fishbrain strategy for OmniAuth 1.x. This allows you to login to Fishbrain with your ruby app.)
-  gem.authors       = ['Erik Dalen']
-  gem.email         = ['erik.dalen@fishbrain.com']
-  gem.homepage      = 'https://github.com/fishbrain/omniauth-fishbrain'
+require 'omniauth-fishbrain/version'
 
-  gem.files         = `git ls-files`.split("\n")
-  gem.require_paths = ['lib']
+Gem::Specification.new do |s|
+  s.name     = 'omniauth-fishbrain'
+  s.version  = OmniAuth::Fishbrain::VERSION
+  s.license  = 'MIT'
+  s.summary  = 'OmniAuth strategy for Fishbrain'
+  s.authors  = ['Erik Dalen', 'Fishbrain AB']
+  s.email    = ['erik.dalen@fishbrain.com', 'developer@fishbrain.com']
+  s.homepage = 'https://github.com/fishbrain/omniauth-fishbrain'
+  s.files    = Dir['lib/**/*.rb', 'LICENSE', 'README.markdown']
 
-  gem.required_ruby_version = '>= 2.2'
-
-  gem.add_runtime_dependency 'jwt', '~> 2.0'
-  gem.add_runtime_dependency 'omniauth-oauth2', '~> 1.6'
+  s.add_runtime_dependency 'jwt', '~> 2.0'
+  s.add_runtime_dependency 'omniauth-oauth2', '~> 1.6'
 end
