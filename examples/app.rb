@@ -5,10 +5,10 @@ require 'omniauth-fishbrain'
 require 'pp'
 require 'sinatra'
 
-USER_POOL_ID = ENV.fetch('USER_POOL_ID')
+USER_POOL_ID = ENV.fetch('USER_POOL_ID', 'eu-west-1_K2uP41DlP')
 CLIENT_ID = ENV.fetch('CLIENT_ID')
 CLIENT_SECRET = ENV.fetch('CLIENT_SECRET')
-ID_TOKEN = ENV.fetch('ID_TOKEN')
+ID_TOKEN = ENV.fetch('ID_TOKEN', nil)
 
 set :port, 3000
 set :sessions, true
@@ -49,9 +49,10 @@ __END__
     Log out
   %pre= session['current_user'].pretty_inspect
 - else
-  %a{href: "/client/auth/fishbrain_id?id_token=#{ID_TOKEN}"}
-    Identify with Fishbrain
-  %br
+  - if ID_TOKEN
+    %a{href: "/client/auth/fishbrain_id?id_token=#{ID_TOKEN}"}
+      Identify with Fishbrain
+    %br
   %a{href: '/client/auth/fishbrain'}
     Log in with Fishbrain
 
