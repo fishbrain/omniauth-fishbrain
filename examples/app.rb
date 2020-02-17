@@ -49,7 +49,7 @@ __END__
     Log out
   %pre= session['current_user'].pretty_inspect
 - else
-  %a{href: "/client/auth/fishbrain_id/callback?id_token=#{ID_TOKEN}"}
+  %a{href: "/client/auth/fishbrain_id?id_token=#{ID_TOKEN}"}
     Identify with Fishbrain
   %br
   %a{href: '/client/auth/fishbrain'}

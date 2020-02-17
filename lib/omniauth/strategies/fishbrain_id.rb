@@ -42,7 +42,7 @@ module OmniAuth
       end
 
       def request_phase
-        fail! :phase_not_supported
+        redirect callback_url
       end
 
       private
