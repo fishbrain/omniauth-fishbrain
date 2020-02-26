@@ -1,12 +1,14 @@
 # frozen_string_literal:true
 
 require 'omniauth/fishbrain/verifies_id_token'
+require 'omniauth/fishbrain/premium_status'
 
 module OmniAuth
   module Strategies
     class FishbrainId
       include OmniAuth::Strategy
       include OmniAuth::Fishbrain::VerifiesIdToken
+      include OmniAuth::Fishbrain::PremiumStatus
 
       option :name, 'fishbrain_id'
       option :user_pool_id, 'eu-west-1_5r0WbR8OH'
@@ -27,7 +29,11 @@ module OmniAuth
       end
 
       extra do
-        { raw_info: id_token.reject { |key| %w[iss aud exp iat token_use].include?(key) } }
+        {
+          raw_info: id_token.reject { |key| %w[iss aud exp iat token_use].include?(key) },
+          premium_status: premium_status,
+          is_premium: premium?,
+        }
       end
 
       def callback_phase
