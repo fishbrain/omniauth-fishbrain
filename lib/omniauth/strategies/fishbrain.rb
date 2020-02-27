@@ -2,11 +2,13 @@
 
 require 'omniauth-oauth2'
 require 'omniauth/fishbrain/verifies_id_token'
+require 'omniauth/fishbrain/premium_status'
 
 module OmniAuth
   module Strategies
     class Fishbrain < OmniAuth::Strategies::OAuth2
       include OmniAuth::Fishbrain::VerifiesIdToken
+      include OmniAuth::Fishbrain::PremiumStatus
 
       option :name, 'fishbrain'
       option :client_options, site: 'https://accounts.fishbrain.com',
@@ -42,7 +44,11 @@ module OmniAuth
       end
 
       extra do
-        { raw_info: id_token.reject { |key| %w[iss aud exp iat token_use].include?(key) } }
+        {
+          raw_info: id_token.reject { |key| %w[iss aud exp iat token_use].include?(key) },
+          premium_status: premium_status,
+          is_premium: premium?,
+        }
       end
 
       private
