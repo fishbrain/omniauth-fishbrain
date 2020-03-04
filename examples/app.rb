@@ -9,6 +9,7 @@ USER_POOL_ID = ENV.fetch('USER_POOL_ID', 'eu-west-1_K2uP41DlP')
 CLIENT_ID = ENV.fetch('CLIENT_ID')
 CLIENT_SECRET = ENV.fetch('CLIENT_SECRET')
 ID_TOKEN = ENV.fetch('ID_TOKEN', nil)
+SITE = 'https://accounts-staging.fishbrain.com'
 
 set :port, 3000
 set :sessions, true
@@ -17,7 +18,7 @@ use OmniAuth::Builder do
   provider :fishbrain_id, user_pool_id: USER_POOL_ID
   provider :fishbrain, CLIENT_ID, CLIENT_SECRET, user_pool_id: USER_POOL_ID,
                                                  client_options: {
-                                                   site: 'https://accounts-staging.fishbrain.com',
+                                                   site: SITE,
                                                  }
 
   configure { |c| c.path_prefix = '/client/auth' }
@@ -29,7 +30,7 @@ end
 
 get '/logout' do
   session.delete('current_user')
-  redirect '/'
+  redirect "#{SITE}/logout?client_id=#{CLIENT_ID}&logout_uri=http://localhost:3000/"
 end
 
 get '/client/auth/failure' do
