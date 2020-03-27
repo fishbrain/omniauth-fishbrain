@@ -16,7 +16,7 @@ module OmniAuth
                               token_url: '/oauth2/token',
                               auth_scheme: :basic_auth
       option :scope, 'email openid profile'
-      option :user_pool_id, 'eu-west-1_5r0WbR8OH'
+      option :user_pool_id, 'eu-west-1_TKWveIcYu'
       option :aws_region, 'eu-west-1'
       option :jwt_leeway, 60
 
