@@ -37,11 +37,10 @@ module OmniAuth
       end
 
       def callback_phase
-        if raw_id_token
-          id_token
-          super
-        else
+        if id_token.empty?
           fail! :missing_id_token
+        else
+          super
         end
       rescue JWT::ExpiredSignature
         fail! :invalid_id_token

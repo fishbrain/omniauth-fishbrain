@@ -7,11 +7,11 @@ module OmniAuth
   module Fishbrain
     module VerifiesIdToken
       def id_token
-        @_id_token ||= begin
-          return {} unless raw_id_token
-
-          JWT.decode(raw_id_token, nil, true, decode_options).first
-        end
+        @_id_token ||= if raw_id_token&.strip&.empty?
+                         {}
+                       else
+                         JWT.decode(raw_id_token, nil, true, decode_options).first
+                       end
       end
 
       def decode_options
