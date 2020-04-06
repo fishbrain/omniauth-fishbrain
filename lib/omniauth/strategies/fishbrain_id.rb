@@ -11,7 +11,7 @@ module OmniAuth
       include OmniAuth::Fishbrain::PremiumStatus
 
       option :name, 'fishbrain_id'
-      option :user_pool_id, 'eu-west-1_5r0WbR8OH'
+      option :user_pool_id, 'eu-west-1_TKWveIcYu'
       option :client_id, nil
       option :aws_region, 'eu-west-1'
       option :jwt_leeway, 60

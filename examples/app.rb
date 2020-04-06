@@ -5,7 +5,7 @@ require 'omniauth-fishbrain'
 require 'pp'
 require 'sinatra'
 
-USER_POOL_ID = ENV.fetch('USER_POOL_ID', 'eu-west-1_K2uP41DlP')
+USER_POOL_ID = ENV.fetch('USER_POOL_ID', 'eu-west-1_WlBhbuD6e')
 CLIENT_ID = ENV.fetch('CLIENT_ID')
 CLIENT_SECRET = ENV.fetch('CLIENT_SECRET')
 ID_TOKEN = ENV.fetch('ID_TOKEN', nil)
