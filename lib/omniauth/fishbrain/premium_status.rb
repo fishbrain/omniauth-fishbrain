@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'date'
 require 'json'
 
 module OmniAuth
@@ -9,15 +8,14 @@ module OmniAuth
       def premium_status
         return {} unless id_token['premium_status']
 
-        JSON.parse id_token['premium_status']
+        JSON.parse(id_token['premium_status'])
       rescue JSON::ParserError
         {}
       end
 
       def premium?
-        DateTime.rfc3339(premium_status['premium_end_date']) > DateTime.now
+        Time.xmlschema(premium_status['end_date']) > Time.new.utc
       rescue ArgumentError
-        # if format was wrong
         false
       end
     end
