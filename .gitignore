@@ -1,5 +1,6 @@
 Gemfile.lock
 .byebug_history
 .env
+.idea
 
 *.gem
