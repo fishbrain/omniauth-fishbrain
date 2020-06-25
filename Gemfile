@@ -12,4 +12,5 @@ group :development, :test do
   gem 'rspec'
   gem 'rubocop'
   gem 'sinatra'
+  gem 'timecop'
 end
