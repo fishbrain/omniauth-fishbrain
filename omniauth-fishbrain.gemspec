@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.email    = ['erik.dalen@fishbrain.com', 'developer@fishbrain.com']
   s.homepage = 'https://github.com/fishbrain/omniauth-fishbrain'
   s.files    = Dir['lib/**/*.rb', 'LICENSE', 'README.markdown']
+  s.required_ruby_version = '>= 2.5.0'
 
   s.add_runtime_dependency 'jwt', '~> 2.0'
   s.add_runtime_dependency 'omniauth-oauth2', '~> 1.6'

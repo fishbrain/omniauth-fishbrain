@@ -28,7 +28,7 @@ module OmniAuth
         {
           iss: iss,
           aud: client_id,
-          verify_aud: true,
+          verify_aud: false,
           verify_expiration: true,
           verify_iat: true,
           verify_iss: true,
