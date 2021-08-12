@@ -13,4 +13,5 @@ group :development, :test do
   gem 'rubocop'
   gem 'sinatra'
   gem 'timecop'
+  gem 'webmock'
 end

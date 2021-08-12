@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-require 'net/http'
+require 'omniauth/fishbrain/jwks'
 require 'jwt'
 
 module OmniAuth
   module Fishbrain
     class DecodeIdToken
+      include Jwks
+
       AWS_REGION = 'eu-west-1'
       USER_POOL_ID = 'eu-west-1_TKWveIcYu'
 
@@ -44,10 +46,7 @@ module OmniAuth
       end
 
       def jwks
-        @_jwks ||= "#{iss}/.well-known/jwks.json"
-          .yield_self(&URI.method(:parse))
-          .yield_self(&Net::HTTP.method(:get))
-          .yield_self { |it| JSON.parse(it, symbolize_names: true) }
+        get_json("#{iss}/.well-known/jwks.json")
       end
     end
   end
