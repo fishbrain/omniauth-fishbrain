@@ -4,6 +4,7 @@ require 'omniauth'
 require 'omniauth-fishbrain'
 require 'rack/test'
 require 'rspec'
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods

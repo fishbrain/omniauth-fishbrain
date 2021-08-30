@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'omniauth/fishbrain/decode_id_token'
 require 'timecop'
+require 'webmock'
 
 describe OmniAuth::Fishbrain::DecodeIdToken do
   describe 'decode' do
@@ -27,13 +28,39 @@ describe OmniAuth::Fishbrain::DecodeIdToken do
       TOKEN
     end
     let(:client_id) { 'tv26vabfnpn09qvqpvh2phqjd' }
+    let(:aws_region) { 'eu-west-1' }
     let(:user_pool_id) { 'eu-west-1_WlBhbuD6e' }
 
     subject { described_class.new(client_id, user_pool_id) }
 
-    it 'decodes a given raw id token' do
+    before do
+      WebMock.allow_net_connect!
+    end
+
+    after do
+      WebMock.disable_net_connect!
+    end
+
+    it 'decodes a given raw id token, second time from cached jwks.json' \
+       ', requests jwks.json again 24 hours + 1 minute later but decoding fails' do
       Timecop.freeze(Time.utc(2020, 6, 24, 12, 14)) do
         expect(subject.decode(token)['sub']).to eq('b7cb08da-c539-4155-bed1-ef78cb7463b0')
+        expect(subject.decode(token)['sub']).to eq('b7cb08da-c539-4155-bed1-ef78cb7463b0')
+
+        expect(WebMock).to have_requested(
+          :get,
+          "https://cognito-idp.#{aws_region}.amazonaws.com/#{user_pool_id}/.well-known/jwks.json"
+        ).once
+
+        Timecop.travel(Time.utc(2020, 6, 25, 12, 15))
+        expect do
+          subject.decode(token)['sub']
+        end.to raise_error(JWT::ExpiredSignature, 'Signature has expired')
+
+        expect(WebMock).to have_requested(
+          :get,
+          "https://cognito-idp.#{user_pool_id.split('_')[0]}.amazonaws.com/#{user_pool_id}/.well-known/jwks.json"
+        ).twice
       end
     end
   end
