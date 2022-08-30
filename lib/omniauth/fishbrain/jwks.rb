@@ -7,7 +7,7 @@ module OmniAuth
   module Fishbrain
     module Jwks
       def get_json(uri)
-        APICache.get('fishbrain_jwks', cache: 86_400) do # 24 hours
+        APICache.get('fishbrain_jwks', cache: 86_400, period: 0) do # 24 hours
           uri
             .yield_self(&URI.method(:parse))
             .yield_self(&Net::HTTP.method(:get))
