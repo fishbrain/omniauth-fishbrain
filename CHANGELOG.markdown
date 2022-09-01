@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. For info on how to format all future additions to this file please reference [Keep A Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.12.1] - 2022-08-30
+
+- Allow requests for jwks.json more than once per minute
+
 ## [0.12.0] - 2021-08-12
 
 - Add caching of jwks.json
