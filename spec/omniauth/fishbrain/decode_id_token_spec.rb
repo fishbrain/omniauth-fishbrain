@@ -29,7 +29,7 @@ describe OmniAuth::Fishbrain::DecodeIdToken do
     end
     let(:client_id) { 'tv26vabfnpn09qvqpvh2phqjd' }
     let(:aws_region) { 'eu-west-1' }
-    let(:user_pool_id) { 'eu-west-1_9AdkO5S3c' }
+    let(:user_pool_id) { 'eu-west-1_WlBhbuD6e' }
 
     subject { described_class.new(client_id, user_pool_id) }
 

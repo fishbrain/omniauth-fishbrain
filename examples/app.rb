@@ -2,7 +2,6 @@
 
 require 'omniauth'
 require 'omniauth-fishbrain'
-require 'pp'
 require 'sinatra'
 
 USER_POOL_ID = ENV.fetch('USER_POOL_ID', 'eu-west-1_9AdkO5S3c')
