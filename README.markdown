@@ -30,11 +30,11 @@ In development/test/staging environments:
 ```ruby
 use OmniAuth::Builder do
   provider :fishbrain, ENV['FISHBRAIN_CLIENT_ID'], ENV['FISHBRAIN_CLIENT_SECRET'],
-                       user_pool_id: 'eu-west-1_WlBhbuD6e',
+                       user_pool_id: 'eu-west-1_9AdkO5S3c',
                        client_options: {
-                         site: 'https://accounts-staging.fishbrain.com',
+                         site: 'https://accounts.staging.fishbrain.com',
                        }
-  provider :fishbrain_id, user_pool_id: 'eu-west-1_WlBhbuD6e'
+  provider :fishbrain_id, user_pool_id: 'eu-west-1_9AdkO5S3c'
 end
 ```
 
